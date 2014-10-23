@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.animasapps.android.draftlist"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="13"
+        android:targetSdkVersion="19" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        
+        <activity
+            android:name="com.animasapps.android.draftlist.activities.MyListsActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+       
+        <activity
+            android:name="com.animasapps.android.draftlist.activities.SingleListActivity"
+            android:parentActivityName="com.animasapps.android.draftlist.activities.MyListsActivity"
+            android:windowSoftInputMode="stateVisible" />
+        
+        <activity 
+            android:name= "com.animasapps.android.draftlist.activities.CreateListActivity"
+            android:label="@string/new_list"
+            android:windowSoftInputMode="stateVisible"
+            android:parentActivityName="com.animasapps.android.draftlist.activities.MyListsActivity" />
+   		
+        
+    </application>
+
+</manifest>

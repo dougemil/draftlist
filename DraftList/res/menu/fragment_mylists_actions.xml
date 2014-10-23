@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Defines extra namespace because ActionBarActivity uses the support library appcompat_v7. Required to make icon visible (showAsAction)
+	 Eclipse auto generates a menu resource w/ additional namespaces when a project is created with an Activity that extends ActionBarActivity  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto" >
+    
+    
+    
+    <item
+        android:id="@+id/menu_item_new_list" 
+        android:title="@string/new_list"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_new"  
+          />
+    
+    <item
+        android:id="@+id/menu_item_delete_list"
+        android:title="@string/label_delete_list"
+        app:showAsAction = "ifRoom"
+        android:icon="@drawable/ic_action_discard"
+        />
+        	
+    
+    <item android:id="@+id/action_search"
+          android:title="@string/action_search"
+          />
+
+</menu>
+
+<!-- Locate ic_menu_add system icon and copy into application drawables files
+     android:icon="@drawable/ic_menu_add"
+     
+     <item android:id="@+id/menu_item_new_crime" 
+          android:showAsAction="ifRoom|withText" 
+          android:title="@string/new_crime" 
+          android:icon="@android:drawable/ic_menu_add"></item>
+          
+          <item android:id="@+id/menu_item_new_list"
+          android:icon="@drawable/ic_menu_add"
+          android:title="@string/new_list"
+          android:showAsAction="ifRoom"
+           android:enabled="true" android:visible="true"/>
+           
+      -->
