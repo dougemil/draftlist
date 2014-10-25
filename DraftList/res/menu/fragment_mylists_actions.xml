@@ -23,9 +23,19 @@
         />
         	
     
-    <item android:id="@+id/action_search"
-          android:title="@string/action_search"
-          />
+    <item
+        android:id="@+id/menu_item_undo"
+        android:title="@string/label_undo"
+        app:showAsAction = "ifRoom"
+        android:icon="@drawable/ic_action_undo"
+        />
+    
+    <item
+        android:id="@+id/menu_item_edit"
+        android:title="@string/label_edit"
+        app:showAsAction = "ifRoom"
+        android:icon="@drawable/ic_action_edit"
+        />
 
 </menu>
 

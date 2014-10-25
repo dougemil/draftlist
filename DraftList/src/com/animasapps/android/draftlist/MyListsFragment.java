@@ -40,6 +40,8 @@ public class MyListsFragment extends ListFragment {
 	private static final int REQ_NEW_LIST = 1;
 	
 	private ArrayList<SingleList> mLists;
+	private SingleList tempList;
+	private int tempListPosition;
 	private boolean mWillDelete = false;
 	
 	/*
@@ -71,8 +73,11 @@ public class MyListsFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView lv, View v, int position, long id) {
 		
-		if (mWillDelete){				// Delete list
-			mLists.remove(position);
+		if (mWillDelete){				
+			tempList = mLists.get(position);  // Save to tmep location for undo
+			tempListPosition = position;
+			
+		mLists.remove(position);			 // Delete from current view
 			mWillDelete = false;
 			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 			
@@ -105,6 +110,11 @@ public class MyListsFragment extends ListFragment {
 			mWillDelete = true;
 			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 			return true;
+		case R.id.menu_item_undo:
+			if(tempList != null){
+				mLists.add(tempListPosition, tempList);
+				((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
+			}
 		default:
 			return super.onOptionsItemSelected(item);
 		}

@@ -36,11 +36,15 @@ public class SingleListFragment extends ListFragment {
 	
 	private SingleList mList;
 	private ArrayList<Item> mItems;
+	private String tempItemName;
+	private int tempPosition;
 	
 	private EditText listTitleField;
 	private TextView listDateField;
 	private EditText listItemField;
 	
+	private ArrayList<String> justList;
+	private ArrayAdapter<String> adapter;
 	private boolean mWillDelete = false;
 	
 	/*
@@ -61,8 +65,7 @@ public class SingleListFragment extends ListFragment {
 	/*
 	 * Gets intent extra from host activity and uses to generate a new SingleList
 	 */
-	ArrayList<String> justList;
-	ArrayAdapter<String> adapter;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {	
 		super.onCreate(savedInstanceState);
@@ -135,6 +138,10 @@ public class SingleListFragment extends ListFragment {
 			mWillDelete = true;
 			getListView().setBackgroundColor(Color.parseColor("#FFBB33"));
 			return true;
+		case R.id.menu_item_undo:
+			justList.add(tempPosition, tempItemName);
+			resetList(justList);
+			adapter.notifyDataSetChanged();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -142,14 +149,27 @@ public class SingleListFragment extends ListFragment {
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		if (mWillDelete){				// Delete list
-			justList.remove(position);
-//***		persist: mods are not getting loaded inthe the object that gets persisted
+		if (mWillDelete){								// Delete list
 			
-			adapter.notifyDataSetChanged();
+			tempItemName = justList.get(position);
+			tempPosition = position;
+			
+			justList.remove(position);
+			resetList(justList); 						// Updates mList
+			adapter.notifyDataSetChanged();				// Update view
 			getListView().setBackgroundColor(Color.parseColor("#ffffff"));
 			mWillDelete = false;
 		}
+	}
+
+	private void resetList(ArrayList<String> currentListStrings){
+		
+		ArrayList<Item> tempList = new ArrayList<Item>();
+		for(String s: currentListStrings){
+			Item i = new Item(s);
+			tempList.add(i);
+		}
+		mList.setList(tempList);
 	}
 	
 	@Override

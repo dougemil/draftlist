@@ -1,8 +1,6 @@
 package com.animasapps.android.draftlist.activities;
 
-import com.animasapps.android.draftlist.R;
-import com.animasapps.android.draftlist.R.id;
-import com.animasapps.android.draftlist.R.layout;
+
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -30,6 +28,9 @@ import android.support.v7.app.ActionBarActivity;
  * Views:
  * 		FrameLayout	
  */
+
+import com.animasapps.android.draftlist.R;
+
 
 
 

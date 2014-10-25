@@ -3,8 +3,6 @@ package com.animasapps.android.draftlist.activities;
 import com.animasapps.android.draftlist.MyListsFragment;
 
 import android.app.Fragment;
-import android.view.Menu;
-import android.view.MenuItem;
 
 /*
  * This class is a host activity.
