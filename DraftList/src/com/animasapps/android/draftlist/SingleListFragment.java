@@ -45,7 +45,9 @@ public class SingleListFragment extends ListFragment {
 	
 	private ArrayList<String> justList;
 	private ArrayAdapter<String> adapter;
+//	private ListItemAdapter adapter;
 	private boolean mWillDelete = false;
+	private boolean mEdit = false;
 	
 	/*
 	 * Alternative to constructor
@@ -96,8 +98,8 @@ public class SingleListFragment extends ListFragment {
 			justList.add(li.getListItem());
 		}
 		
-//		Generic adapter implementation, requires simple list?
 		adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, justList);
+//		adapter = new ListItemAdapter(mItems);
 		setListAdapter(adapter);
 		
 		Button btn = (Button)v.findViewById(R.id.btnAdd);
@@ -136,7 +138,13 @@ public class SingleListFragment extends ListFragment {
 		case R.id.menu_item_delete_list_item:
 			Log.i(TAG, "Delete Item selected");
 			mWillDelete = true;
-			getListView().setBackgroundColor(Color.parseColor("#FFBB33"));
+			getListView().setBackgroundColor(Color.parseColor("#ff9800"));
+			return true;
+		case R.id.menu_item_edit:
+			Log.i(TAG, "Edit Item selected");
+			mEdit = true;
+			getListView().setBackgroundColor(Color.parseColor("#ffeb3b"));
+			Log.i(TAG, "Delete Item selected. Bground color set.");
 			return true;
 		case R.id.menu_item_undo:
 			justList.add(tempPosition, tempItemName);
@@ -159,6 +167,18 @@ public class SingleListFragment extends ListFragment {
 			adapter.notifyDataSetChanged();				// Update view
 			getListView().setBackgroundColor(Color.parseColor("#ffffff"));
 			mWillDelete = false;
+		} else if (mEdit){
+			
+			TextView listItem = (TextView)l.getChildAt(position);
+			listItem.setVisibility(View.INVISIBLE);
+			adapter.notifyDataSetChanged();
+			
+//			EditText editListItem = new EditText(getActivity());
+//			editListItem.setText(listItem.getText());
+//			l.addView(editListItem);
+			
+//			l.addView(editListItem, position);
+//			**** Throwing Exception: AdapterView does not support operation
 		}
 	}
 
@@ -196,7 +216,9 @@ public class SingleListFragment extends ListFragment {
 //			}
 //			
 //			Item li = getItem(position);
+//			
 //			TextView itemView = (TextView)convertView.findViewById(R.id.singlelist_itemView);
+//			Log.i(TAG, "Item name: " + li.getListItem());
 //			itemView.setText(li.getListItem()); // **ListItemAdapter.getView()
 //			
 //			return convertView;

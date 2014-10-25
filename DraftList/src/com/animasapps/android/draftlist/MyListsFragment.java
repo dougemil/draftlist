@@ -43,6 +43,7 @@ public class MyListsFragment extends ListFragment {
 	private SingleList tempList;
 	private int tempListPosition;
 	private boolean mWillDelete = false;
+	private boolean mEdit = false;
 	
 	/*
 	 * Tells frag mgr to create options menu
@@ -81,6 +82,14 @@ public class MyListsFragment extends ListFragment {
 			mWillDelete = false;
 			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 			
+		}else if (mEdit){
+			
+//			TODO
+//			TextView list = (TextView)lv.getChildAt(position);
+//			list.setVisibility(View.INVISIBLE);
+			
+			
+			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 		}else{  						// Open list	
 			SingleList sl = ((SingleListAdapter)getListAdapter()).getItem(position); // Use adapter to get a list		
 			Intent i = new Intent(getActivity(), SingleListActivity.class);
@@ -110,6 +119,9 @@ public class MyListsFragment extends ListFragment {
 			mWillDelete = true;
 			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 			return true;
+		case R.id.menu_item_edit:
+			mEdit = true;
+			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 		case R.id.menu_item_undo:
 			if(tempList != null){
 				mLists.add(tempListPosition, tempList);
@@ -149,10 +161,13 @@ public class MyListsFragment extends ListFragment {
 			TextView dateTextView = (TextView)convertView.findViewById(R.id.mylists_item_dateTextView);
 			dateTextView.setText(sl.getFormattedDate());
 			
+			// Color conifguration
 			if(mWillDelete){
-				convertView.setBackgroundColor(Color.parseColor("#FFBB33"));
+				convertView.setBackgroundColor(Color.parseColor("#ff9800"));  // Orange
+			}else if(mEdit){
+				convertView.setBackgroundColor(Color.parseColor("#ffeb3b"));  // Yellow
 			}else{
-				convertView.setBackgroundColor(Color.parseColor("#ffffff"));
+				convertView.setBackgroundColor(Color.parseColor("#ffffff"));  // White
 			}
 			return convertView;
 		}
