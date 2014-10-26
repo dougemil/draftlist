@@ -1,5 +1,6 @@
 package com.animasapps.android.draftlist.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import org.json.JSONException;
@@ -9,7 +10,7 @@ import org.json.JSONObject;
  * Ready for JSON serialization
  * 
  */
-public class Item {
+public class Item implements Serializable{
 
 	private UUID mId;
 	private String mListItem;

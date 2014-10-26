@@ -3,7 +3,9 @@ package com.animasapps.android.draftlist;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +37,7 @@ import com.animasapps.android.draftlist.model.SingleList;
 public class EditListFragment extends ListFragment {
 
 	public static final String EXTRA_LIST_ID = "com.animasapps.android.draftlist.singlelistfragment.list_id";
+	public static final String EXTRA_LIST = "com.animasapps.android.draftlist.editlistfragment.list";
 	private static final String TAG = "EditListFragment";
 	
 	private SingleList mList;
@@ -103,8 +106,8 @@ public class EditListFragment extends ListFragment {
 	                justList.add(v.getText().toString());	  	// Add string to local (visible) list
 	                Item i = new Item(v.getText().toString()); 	// Create new Item from String
 	                mList.addListItem(i);						// Add Item to SingleList
+	                
 	                v.setText("");
-	               
 	                adapter.notifyDataSetChanged();	
 					return true;
 				}
@@ -145,8 +148,11 @@ public class EditListFragment extends ListFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()){
-		case R.id.menu_item_new_list:
-//			TODO
+		case R.id.menu_item_accept:
+			Intent i = new Intent();
+			i.putExtra(EXTRA_LIST, mList);
+			getActivity().setResult(Activity.RESULT_OK, i);
+			getActivity().finish(); 							
 			return true;
 		case R.id.menu_item_delete_list_item:
 			Log.i(TAG, "Delete Item selected");

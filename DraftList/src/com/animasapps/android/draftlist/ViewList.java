@@ -163,8 +163,18 @@ public class ViewList extends ListFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
 		if ((requestCode == ADD_LIST_ITEM) && (resultCode == Activity.RESULT_OK)){
-			//mList = (SingleList)data.getSerializableExtra(id for modified list);
+			mList = (SingleList)data.getSerializableExtra(EditListFragment.EXTRA_LIST);
 			
+//			**** Needs testing
+			mItems = mList.getList(); // Create array of strings with list item names
+			itemNames = new ArrayList<String>();
+			for(Item li: mItems)
+				itemNames.add(li.getListItem());
+			
+			adapter.clear();
+			adapter.addAll(itemNames);
+			adapter.notifyDataSetChanged();
+
 		}else{
 			Log.i(TAG, "Bad request code or result");
 		}
