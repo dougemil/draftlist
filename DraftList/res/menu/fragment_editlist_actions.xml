@@ -9,10 +9,10 @@
     
     
     <item
-        android:id="@+id/menu_item_new_list_item" 
+        android:id="@+id/menu_item_accept" 
         android:title="@string/new_list"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_new"  
+        android:icon="@drawable/ic_action_accept"  
           />
     
     <item

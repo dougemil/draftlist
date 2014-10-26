@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import android.app.Fragment;
 
-import com.animasapps.android.draftlist.SingleListFragment;
+import com.animasapps.android.draftlist.EditListFragment;
 
 public class SingleListActivity extends SingleFragmentActivity {
 
@@ -17,9 +17,10 @@ public class SingleListActivity extends SingleFragmentActivity {
 	 */
 	@Override
 	protected Fragment createFragment() {
+
+		UUID listId = (UUID)getIntent().getSerializableExtra(EditListFragment.EXTRA_LIST_ID);
+		return EditListFragment.newInstance(listId);
 		
-		UUID listId = (UUID)getIntent().getSerializableExtra(SingleListFragment.EXTRA_LIST_ID);
-		return SingleListFragment.newInstance(listId);
 	}
 
 }

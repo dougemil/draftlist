@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.animasapps.android.draftlist.activities.CreateListActivity;
 import com.animasapps.android.draftlist.activities.SingleListActivity;
+import com.animasapps.android.draftlist.activities.ViewListActivity;
 import com.animasapps.android.draftlist.model.MyLists;
 import com.animasapps.android.draftlist.model.SingleList;
 /*
@@ -43,7 +44,6 @@ public class MyListsFragment extends ListFragment {
 	private SingleList tempList;
 	private int tempListPosition;
 	private boolean mWillDelete = false;
-	private boolean mEdit = false;
 	
 	/*
 	 * Tells frag mgr to create options menu
@@ -82,18 +82,14 @@ public class MyListsFragment extends ListFragment {
 			mWillDelete = false;
 			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 			
-		}else if (mEdit){
-			
-//			TODO
-//			TextView list = (TextView)lv.getChildAt(position);
-//			list.setVisibility(View.INVISIBLE);
-			
-			
-			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 		}else{  						// Open list	
-			SingleList sl = ((SingleListAdapter)getListAdapter()).getItem(position); // Use adapter to get a list		
-			Intent i = new Intent(getActivity(), SingleListActivity.class);
-			i.putExtra(SingleListFragment.EXTRA_LIST_ID, sl.getId());
+			SingleList sl = ((SingleListAdapter)getListAdapter()).getItem(position); // Use adapter to get a list
+			
+//			*** Modified for ViewList implementation ***
+//			Intent i = new Intent(getActivity(), SingleListActivity.class);
+//			i.putExtra(EditListFragment.EXTRA_LIST_ID, sl.getId());
+			Intent i = new Intent(getActivity(), ViewListActivity.class);
+			i.putExtra(ViewList.EXTRA_LIST_ID, sl.getId());
 			startActivity(i);
 			Log.d(TAG, sl.getListTitle() + " was clicked");
 		}
@@ -119,9 +115,6 @@ public class MyListsFragment extends ListFragment {
 			mWillDelete = true;
 			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 			return true;
-		case R.id.menu_item_edit:
-			mEdit = true;
-			((SingleListAdapter)getListAdapter()).notifyDataSetChanged();
 		case R.id.menu_item_undo:
 			if(tempList != null){
 				mLists.add(tempListPosition, tempList);
@@ -164,8 +157,6 @@ public class MyListsFragment extends ListFragment {
 			// Color conifguration
 			if(mWillDelete){
 				convertView.setBackgroundColor(Color.parseColor("#ff9800"));  // Orange
-			}else if(mEdit){
-				convertView.setBackgroundColor(Color.parseColor("#ffeb3b"));  // Yellow
 			}else{
 				convertView.setBackgroundColor(Color.parseColor("#ffffff"));  // White
 			}
@@ -195,7 +186,7 @@ public class MyListsFragment extends ListFragment {
 			Log.i(TAG, "Added list: " + list.getListTitle());
 			
 			Intent i = new Intent(getActivity(), SingleListActivity.class);
-			i.putExtra(SingleListFragment.EXTRA_LIST_ID, list.getId());
+			i.putExtra(EditListFragment.EXTRA_LIST_ID, list.getId());
 			startActivity(i);
 			
 		}else{

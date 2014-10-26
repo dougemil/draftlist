@@ -10,6 +10,7 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:imeOptions="actionGo"
         android:hint="@string/list_item_hint"
     />
  

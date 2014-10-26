@@ -25,7 +25,7 @@
        
         <activity
             android:name="com.animasapps.android.draftlist.activities.SingleListActivity"
-            android:parentActivityName="com.animasapps.android.draftlist.activities.MyListsActivity"
+            android:parentActivityName="com.animasapps.android.draftlist.activities.ViewListsActivity"
             android:windowSoftInputMode="stateVisible" />
         
         <activity 
@@ -33,6 +33,13 @@
             android:label="@string/new_list"
             android:windowSoftInputMode="stateVisible"
             android:parentActivityName="com.animasapps.android.draftlist.activities.MyListsActivity" />
+        
+        <activity
+            android:name="com.animasapps.android.draftlist.activities.ViewListActivity"
+            android:parentActivityName="com.animasapps.android.draftlist.activities.MyListsActivity"
+            android:windowSoftInputMode="stateVisible" />
+        
+        
    		
         
     </application>

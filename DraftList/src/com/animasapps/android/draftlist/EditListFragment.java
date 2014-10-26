@@ -7,17 +7,20 @@ import android.app.ListFragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.animasapps.android.draftlist.model.Item;
 import com.animasapps.android.draftlist.model.MyLists;
@@ -29,23 +32,19 @@ import com.animasapps.android.draftlist.model.SingleList;
  * 
  * 
  */
-public class SingleListFragment extends ListFragment {
+public class EditListFragment extends ListFragment {
 
 	public static final String EXTRA_LIST_ID = "com.animasapps.android.draftlist.singlelistfragment.list_id";
-	private static final String TAG = "SingleListFragment";
+	private static final String TAG = "EditListFragment";
 	
 	private SingleList mList;
 	private ArrayList<Item> mItems;
 	private String tempItemName;
 	private int tempPosition;
 	
-	private EditText listTitleField;
-	private TextView listDateField;
-	private EditText listItemField;
-	
 	private ArrayList<String> justList;
 	private ArrayAdapter<String> adapter;
-//	private ListItemAdapter adapter;
+
 	private boolean mWillDelete = false;
 	private boolean mEdit = false;
 	
@@ -55,19 +54,17 @@ public class SingleListFragment extends ListFragment {
 	 * Maintains Fragment encapsulation
 	 * 
 	 */
-	public static SingleListFragment newInstance(UUID listId) {
+	public static EditListFragment newInstance(UUID listId) {
 		
 		Bundle args = new Bundle();
 		args.putSerializable(EXTRA_LIST_ID, listId);	
-		SingleListFragment fragment = new SingleListFragment();
+		EditListFragment fragment = new EditListFragment();
 		fragment.setArguments(args);
 		
 		return fragment;
 	}
-	/*
-	 * Gets intent extra from host activity and uses to generate a new SingleList
-	 */
 	
+//	Gets intent extra from host activity and uses to generate a new SingleList
 	@Override
 	public void onCreate(Bundle savedInstanceState) {	
 		super.onCreate(savedInstanceState);
@@ -75,11 +72,7 @@ public class SingleListFragment extends ListFragment {
 		
 		UUID listId = (UUID)getArguments().getSerializable(EXTRA_LIST_ID);
 		mList = MyLists.get(getActivity()).getSingleList(listId);
-		getActivity().setTitle(mList.getListTitle()); // displays list title in ActionBar
-		
-		// **** Adapter implementation for ListView
-//		StringListAdapter adapter = new StringListAdapter(mList.getList());
-		
+		getActivity().setTitle(mList.getListTitle()); // displays list title in ActionBar		
 	}
 	/*
 	 * Generic ListView/EditText Implementation
@@ -89,7 +82,7 @@ public class SingleListFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.view_list, container, false);
+		View v = inflater.inflate(R.layout.fragment_editlist, container, false);
 		 
 		mItems = mList.getList();
 		
@@ -99,34 +92,54 @@ public class SingleListFragment extends ListFragment {
 		}
 		
 		adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, justList);
-//		adapter = new ListItemAdapter(mItems);
 		setListAdapter(adapter);
 		
-		Button btn = (Button)v.findViewById(R.id.btnAdd);
-		btn.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				EditText edit = (EditText)getActivity().findViewById(R.id.txtItem);
-                Log.i(TAG, "Text: " + edit.getText());
-                justList.add(edit.getText().toString());	  // Add string to local (visible) list
-                Item i = new Item(edit.getText().toString()); // Create new Item from String
-                mList.addListItem(i);						  // Add Item to SingleList
-                edit.setText("");
-               
-                adapter.notifyDataSetChanged();	
+//		Return key listener
+		EditText et = (EditText)v.findViewById(R.id.txtItem);
+		et.setOnEditorActionListener(new OnEditorActionListener(){
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
+				if(actionId == EditorInfo.IME_ACTION_GO){		
+					Log.i(TAG, "Enter key pressed. Text: " + v.getText());
+	                justList.add(v.getText().toString());	  	// Add string to local (visible) list
+	                Item i = new Item(v.getText().toString()); 	// Create new Item from String
+	                mList.addListItem(i);						// Add Item to SingleList
+	                v.setText("");
+	               
+	                adapter.notifyDataSetChanged();	
+					return true;
+				}
+				return false;
 			}
 		});
+			
 		
-		
+//		Add list item wiring
+//		Button btn = (Button)v.findViewById(R.id.btnAdd);
+//		btn.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				
+//				EditText edit = (EditText)getActivity().findViewById(R.id.txtItem);
+//                Log.i(TAG, "Text: " + edit.getText());
+//                justList.add(edit.getText().toString());	  // Add string to local (visible) list
+//                Item i = new Item(edit.getText().toString()); // Create new Item from String
+//                mList.addListItem(i);						  // Add Item to SingleList
+//                edit.setText("");
+//               
+//                adapter.notifyDataSetChanged();	
+//			}
+//		});
+//		
+//		
+//		
 		return v;
 	}
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.fragment_singlelist_actions, menu);
+		inflater.inflate(R.menu.fragment_editlist_actions, menu);
 	}
 	
 	@Override
@@ -139,12 +152,6 @@ public class SingleListFragment extends ListFragment {
 			Log.i(TAG, "Delete Item selected");
 			mWillDelete = true;
 			getListView().setBackgroundColor(Color.parseColor("#ff9800"));
-			return true;
-		case R.id.menu_item_edit:
-			Log.i(TAG, "Edit Item selected");
-			mEdit = true;
-			getListView().setBackgroundColor(Color.parseColor("#ffeb3b"));
-			Log.i(TAG, "Delete Item selected. Bground color set.");
 			return true;
 		case R.id.menu_item_undo:
 			justList.add(tempPosition, tempItemName);
@@ -167,19 +174,7 @@ public class SingleListFragment extends ListFragment {
 			adapter.notifyDataSetChanged();				// Update view
 			getListView().setBackgroundColor(Color.parseColor("#ffffff"));
 			mWillDelete = false;
-		} else if (mEdit){
-			
-			TextView listItem = (TextView)l.getChildAt(position);
-			listItem.setVisibility(View.INVISIBLE);
-			adapter.notifyDataSetChanged();
-			
-//			EditText editListItem = new EditText(getActivity());
-//			editListItem.setText(listItem.getText());
-//			l.addView(editListItem);
-			
-//			l.addView(editListItem, position);
-//			**** Throwing Exception: AdapterView does not support operation
-		}
+		} 
 	}
 
 	private void resetList(ArrayList<String> currentListStrings){
@@ -224,6 +219,8 @@ public class SingleListFragment extends ListFragment {
 //			return convertView;
 //		}
 //	}
+	
+	
 //	private class ListItemsAdapter extends ArrayAdapter<Item>{
 //		
 //	}
