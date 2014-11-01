@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 
 import com.animasapps.android.draftlist.model.SingleList;
 
-/*  Git Test ********  one two *****
+/*  Still testing Git
  * 
  * This class is instantiated by MyListsFragment ActionBar to create a new list
  * New list is loaded in an extra and returned

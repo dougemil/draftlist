@@ -159,6 +159,7 @@ public class ViewList extends ListFragment {
 		}
 	}
 	
+//	Accepts updated list and updates view
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
@@ -181,6 +182,7 @@ public class ViewList extends ListFragment {
 		
 	}
 	
+//	Saves lists
 	@Override
 	public void onPause() {
 		super.onPause();
